@@ -2,14 +2,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
     public float moveSpeed = 5f;
-
     public float jumpForce = 7f;
 
     private Rigidbody2D rb;
-
     private bool isGrounded = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
