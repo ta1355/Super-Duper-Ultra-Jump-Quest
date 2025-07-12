@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float moveSpeed = 3f;
     public float jumpForce = 7f;
 
     private Rigidbody2D rb;
@@ -15,8 +15,12 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
         HandleJump();
+    }
+
+    void FixedUpdate()
+    {
+        HandleMovement();
     }
 
     void HandleMovement()
