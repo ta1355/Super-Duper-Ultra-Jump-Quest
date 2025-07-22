@@ -2,15 +2,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 3f;
-    public float jumpForce = 7f;
+    public float moveSpeed = 1.5f;
+    public float jumpForce = 3f;
 
     private Rigidbody2D rb;
+    private Animator animator;
     private bool isGrounded = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -27,6 +29,11 @@ public class PlayerController : MonoBehaviour
     {
         float moveInput = Input.GetAxis("Horizontal");
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+
+        if (animator != null)
+        {
+            animator.SetBool("isRunning", Mathf.Abs(moveInput) > 0.01f);
+        }
     }
 
     void HandleJump()
