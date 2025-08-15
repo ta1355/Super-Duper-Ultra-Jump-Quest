@@ -7074,6 +7074,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3.5
   jumpForce: 7
+  climbSpeed: 2
+  gravityScale: 3
   maxJumpCount: 2
   currentJumpCount: 0
 --- !u!1 &1023910826
