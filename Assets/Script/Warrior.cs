@@ -28,16 +28,20 @@ public class Warrior : MonoBehaviour
 
     private Vector2 input;
 
+    [Header("Weapon Setting")]
+    public Weapon weapon;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        Debug.Log("Warrior Start() 초기화 완료");
     }
 
     void Update()
     {
-        HandleInput();
 
+        HandleInput();
         HandleMovement();
         HandleJump();
         HandleCrouch();
@@ -53,11 +57,22 @@ public class Warrior : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         input = new Vector2(horizontal, Input.GetAxisRaw("Vertical"));
 
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Debug.Log("Z 키 눌림");
+        }
+
         if (Input.GetKeyDown(KeyCode.Z) && !isAttacking)
+        {
+            Debug.Log("공격 요청됨");
             attackRequested = true;
+        }
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && !isAttacking)
+        {
+            Debug.Log("대시 요청됨");
             StartDash();
+        }
     }
 
     // 사용자 입력에 따른 이동 처리
@@ -71,7 +86,6 @@ public class Warrior : MonoBehaviour
 
         rb.linearVelocity = new Vector2(input.x * moveSpeed, rb.linearVelocity.y);
 
-        // 좌우 방향 전환
         if (input.x > 0.01f)
             transform.localScale = new Vector3(1, 1, 1);
         else if (input.x < -0.01f)
@@ -85,6 +99,7 @@ public class Warrior : MonoBehaviour
 
         if (jumpPressed && (isGrounded || currentJumpCount < maxJumpCount))
         {
+            Debug.Log("점프 실행");
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             currentJumpCount++;
             isGrounded = false;
@@ -99,7 +114,8 @@ public class Warrior : MonoBehaviour
             }
         }
     }
-    // 않기 처리(아직 구현중...)
+
+    // 않기 처리(아직 구현중... 아마 미구현될 가능성 높음)
     void HandleCrouch()
     {
         isCrouching = input.y < -0.2f && isGrounded;
@@ -111,6 +127,7 @@ public class Warrior : MonoBehaviour
     // 대시 시작
     void StartDash()
     {
+        Debug.Log("StartDash() 실행");
         isDashing = true;
         dashTimer = dashDuration;
         dashDirection = new Vector2(transform.localScale.x, 0);
@@ -129,6 +146,7 @@ public class Warrior : MonoBehaviour
         dashTimer -= Time.deltaTime;
         if (dashTimer <= 0f)
         {
+            Debug.Log("대시 종료");
             isDashing = false;
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
 
@@ -142,29 +160,45 @@ public class Warrior : MonoBehaviour
     {
         if (attackRequested && !isAttacking)
         {
+            Debug.Log("HandleAttack() → 공격 시작");
             attackRequested = false;
             isAttacking = true;
 
             if (animator != null)
                 animator.SetBool("isAttacking", true);
 
-            // 공격 중 이동 가능하도록 주석 처리     <- 어떻게 할지 생각중(이동하면서 공격가능하게 하는게 맞나 아니면 공격하면 제자리에만 있어야하나...)
-            // rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            if (weapon != null)
+            {
+                Debug.Log("weapon.Activate() 호출됨");
+                weapon.Activate(); // 공격!!
+            }
+            else
+            {
+                Debug.LogWarning("weapon이 연결되지 않음!");
+            }
         }
     }
 
     // 공격 리셋(에니메이션에서 함수 호출해서 사용중)
     public void ResetAttack()
     {
+        Debug.Log("ResetAttack() 호출됨");
         isAttacking = false;
 
         if (animator != null)
             animator.SetBool("isAttacking", false);
+
+        if (weapon != null)
+        {
+            Debug.Log("weapon.Deactivate() 호출됨");
+            weapon.Deactivate(); // 공격 끝!!
+        }
     }
 
     // 점프 → 점프투폴 상태 전환용 (애니메이션 이벤트에서 호출)
     public void SetJumpToFall()
     {
+        Debug.Log("SetJumpToFall() 호출됨");
         isJumpToFall = true;
         isJumping = false;
 
@@ -178,6 +212,7 @@ public class Warrior : MonoBehaviour
     // 착지 시점에 호출 (애니메이션 이벤트 or 충돌에서)
     public void ResetJumpStates()
     {
+        Debug.Log("ResetJumpStates() 호출됨 (착지)");
         isJumping = false;
         isJumpToFall = false;
 
@@ -208,6 +243,7 @@ public class Warrior : MonoBehaviour
         {
             if (contact.normal.y > 0.7f)
             {
+                Debug.Log("지면 충돌 감지됨");
                 isGrounded = true;
                 currentJumpCount = 0;
                 ResetJumpStates();
@@ -223,6 +259,7 @@ public class Warrior : MonoBehaviour
     // 충돌 종료 감지
     private void OnCollisionExit2D(Collision2D collision)
     {
+        Debug.Log("지면 충돌 종료");
         isGrounded = false;
 
         if (animator != null)
