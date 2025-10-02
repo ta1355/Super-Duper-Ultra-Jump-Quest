@@ -4,7 +4,6 @@ public class CharacterStats : MonoBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
-
     private bool isInvincible = false;
 
     void Start()
