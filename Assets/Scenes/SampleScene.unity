@@ -1776,6 +1776,8 @@ GameObject:
   - component: {fileID: 169492240}
   - component: {fileID: 169492239}
   - component: {fileID: 169492238}
+  - component: {fileID: 169492243}
+  - component: {fileID: 169492244}
   m_Layer: 0
   m_Name: Warrior
   m_TagString: Untagged
@@ -1811,12 +1813,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3fd4ad0c28907448b23b9326514767e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpForce: 7
-  dashSpeed: 12
-  dashDuration: 0.2
-  maxJumpCount: 2
-  weapon: {fileID: 1021181968}
 --- !u!50 &169492239
 Rigidbody2D:
   serializedVersion: 5
@@ -1958,6 +1954,40 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &169492243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169492236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92fdaeb80cbafef498d5649d41d22e87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  jumpForce: 7
+  dashSpeed: 12
+  dashDuration: 0.2
+  maxJumpCount: 2
+  input: {x: 0, y: 0}
+  isJumping: 0
+  isJumpingToFall: 0
+  isCrouchIng: 0
+--- !u!114 &169492244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169492236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ae0e2ed88e90c6459714035be295f40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon: {fileID: 1021181968}
 --- !u!1 &177625395
 GameObject:
   m_ObjectHideFlags: 0
@@ -15821,7 +15851,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3.5
   jumpForce: 7
+  dashSpeed: 12
+  dashDuration: 0.2
   maxJumpCount: 2
+  input: {x: 0, y: 0}
+  isJumping: 0
+  isJumpingToFall: 0
+  isCrouchIng: 0
 --- !u!1 &929682637
 GameObject:
   m_ObjectHideFlags: 0

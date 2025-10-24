@@ -70,7 +70,7 @@ public class MyCharacterController : MonoBehaviour
 
         rb.linearVelocity = dashDirection * dashSpeed;
 
-        animator.SetBool("isDasahing", true);
+        animator.SetBool("isDashing", true);
     }
 
 
@@ -88,6 +88,15 @@ public class MyCharacterController : MonoBehaviour
                 animator.SetBool("isDashing", false);
             }
         }
+
+        if (!isGrounded && isJumping && rb.linearVelocity.y < 0)
+        {
+            isJumping = false;
+            isJumpingToFall = true;
+
+            animator.SetBool("isJumping", false);
+            animator.SetBool("isJumpToFall", true);
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -98,7 +107,14 @@ public class MyCharacterController : MonoBehaviour
             {
                 isGrounded = true;
                 currentJumpCount = 0;
+
+                isJumping = false;
+                isJumpingToFall = false;
+
+
                 animator.SetBool("isGrounded", true);
+                animator.SetBool("isJumping", false);
+                animator.SetBool("isJumpToFall", false);
                 break; // 땋에 들어오면 더이상 확인 할 이유 없음 그러니까 탈출
             }
         }
